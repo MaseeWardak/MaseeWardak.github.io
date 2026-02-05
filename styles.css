@@ -1,13 +1,19 @@
 /* General Reset */
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* Body Styling */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f9;
@@ -83,6 +89,7 @@ header {
 .header-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
     animation: fadeInDown 1s ease-out;
 }
 
@@ -98,31 +105,52 @@ header {
 }
 
 header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin-bottom: 0.35rem;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 0.02em;
 }
 
 header p {
-    font-size: 1.3rem;
+    font-size: 1.05rem;
     font-style: italic;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
+    opacity: 0.95;
 }
 
-.header-icon {
-    font-size: 3rem;
-    margin-top: 20px;
-    animation: pulse 2s infinite;
+/* Lightning icon with electric effect */
+.header-icon.electric-icon {
+    display: inline-block;
+    position: relative;
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    filter: drop-shadow(0 0 6px #ffcc00) drop-shadow(0 0 12px rgba(255, 204, 0, 0.5));
+    animation: electricFlicker 2.5s ease-in-out infinite;
 }
 
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
+.header-icon.electric-icon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 140%;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: electricFlash 1.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes electricFlicker {
+    0%, 82%, 100% { filter: drop-shadow(0 0 6px #ffcc00) drop-shadow(0 0 12px rgba(255, 204, 0, 0.5)); opacity: 1; }
+    85%, 92% { filter: drop-shadow(0 0 14px #ffcc00) drop-shadow(0 0 22px rgba(255, 204, 0, 0.75)); opacity: 1.05; }
+    88%, 95% { filter: drop-shadow(0 0 4px #ffcc00); opacity: 0.92; }
+}
+
+@keyframes electricFlash {
+    0%, 75%, 100% { opacity: 0; }
+    82%, 90% { opacity: 0.65; }
 }
 
 /* Navigation Bar */
@@ -178,13 +206,18 @@ nav a:hover::after {
 
 /* Section Styling */
 section {
-    margin: 40px auto;
-    padding: 40px 20px;
-    max-width: 1200px;
+    margin: 0 auto 1.75rem;
+    padding: 1.75rem 1.5rem;
+    max-width: 900px;
+    width: 100%;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     animation: fadeIn 0.8s ease-out;
+}
+
+section:last-of-type {
+    margin-bottom: 2rem;
 }
 
 @keyframes fadeIn {
@@ -199,46 +232,41 @@ section {
 }
 
 section h2 {
-    font-size: 2.2rem;
-    margin-bottom: 30px;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
     color: #0047ab;
     border-bottom: 3px solid #ffcc00;
     display: inline-block;
-    padding-bottom: 10px;
+    padding-bottom: 0.4rem;
 }
 
 section p {
-    margin: 10px 0;
-    font-size: 1.1rem;
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
 }
 
 /* About Section */
-.about-content {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.about-icon {
-    font-size: 4rem;
-    flex-shrink: 0;
+.about-text {
+    max-width: 60ch;
+    line-height: 1.65;
 }
 
 /* Projects Section */
 .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
 .project-card {
-    background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
-    border: 2px solid #e0e0e0;
+    background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+    border: 1px solid #e0e0e0;
     border-radius: 12px;
-    padding: 25px;
+    padding: 1.25rem;
     text-align: center;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
@@ -259,56 +287,38 @@ section p {
 }
 
 .project-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0, 71, 171, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 71, 171, 0.18);
     border-color: #0047ab;
 }
 
-.project-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #0047ab, #003366);
-    color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-    font-weight: bold;
+.project-img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: block;
 }
 
 .project-card h3 {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
     color: #0047ab;
 }
 
 .project-card p {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #555;
-    margin-bottom: 15px;
-}
-
-.tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.tech-tags span {
-    background-color: #e8f0fe;
-    color: #0047ab;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid #0047ab;
+    margin-bottom: 1rem;
+    line-height: 1.55;
 }
 
 .btn {
     display: inline-block;
-    margin-top: 15px;
-    padding: 10px 25px;
+    margin-top: 0.25rem;
+    padding: 0.5rem 1.25rem;
     background: linear-gradient(135deg, #0047ab, #003366);
     color: white;
     text-decoration: none;
@@ -325,40 +335,40 @@ section p {
 
 /* Hackathon Section */
 .hackathon-note {
-    background: linear-gradient(135deg, #fff3cd, #fff8e1);
+    background: linear-gradient(135deg, #fff8e1, #fffbf0);
     border-left: 4px solid #ffcc00;
-    padding: 15px;
-    margin-bottom: 25px;
-    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
 }
 
 .hackathon-note p {
     margin: 0;
     color: #856404;
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 /* Collapsible Section */
 .collapsible-section {
-    margin-top: 20px;
+    margin-top: 0.5rem;
 }
 
 .collapsible {
     background: linear-gradient(135deg, #0047ab, #003366);
     color: white;
     cursor: pointer;
-    padding: 18px 20px;
+    padding: 1rem 1.25rem;
     width: 100%;
     border: none;
     text-align: left;
     outline: none;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: bold;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 0.75rem;
 }
 
 .collapsible:hover {
@@ -394,31 +404,45 @@ section p {
 }
 
 .hackathon-card {
-    padding: 30px;
+    padding: 1.25rem 1.5rem;
+}
+
+.hackathon-image {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    display: block;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 .hackathon-header {
-    margin-bottom: 25px;
+    margin-bottom: 1rem;
 }
 
 .hackathon-header h3 {
-    font-size: 1.8rem;
+    font-size: 1.25rem;
     color: #0047ab;
-    margin-bottom: 10px;
+    margin-bottom: 0.35rem;
 }
 
 .tagline {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: #666;
     font-style: italic;
 }
 
 .hackathon-section {
-    margin: 25px 0;
-    padding: 20px;
+    margin: 1rem 0 0;
+    padding: 1rem;
     background: white;
     border-radius: 8px;
     border-left: 4px solid #0047ab;
+}
+
+.hackathon-section p {
+    margin: 0;
 }
 
 .hackathon-section h4 {
@@ -453,84 +477,97 @@ section p {
     border: 1px solid #0047ab;
 }
 
-/* Contact Section */
-.contact-content {
-    text-align: center;
+/* Contact Section — compact */
+#contact {
+    padding: 1.25rem 1.5rem;
 }
 
-.contact-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
+.contact-text {
+    font-size: 0.95rem;
+    margin: 0;
 }
 
-.contact-content a {
+.contact-text a {
     color: #0047ab;
     text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    padding: 2px 5px;
-    border-radius: 4px;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-.contact-content a:hover {
+.contact-text a:hover {
     color: #ffcc00;
-    background-color: rgba(0, 71, 171, 0.1);
+}
+
+.contact-text a + a {
+    margin-left: 0.5rem;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
-    padding: 25px 20px;
+    margin-top: 0;
+    padding: 1.25rem 1rem;
     background: linear-gradient(135deg, #003366 0%, #0047ab 100%);
     color: white;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    header {
+        padding: 2rem 1rem 2.5rem;
+    }
+
     header h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
-    
+
     header p {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
-    
-    .header-icon {
-        font-size: 2rem;
+
+    .header-icon.electric-icon {
+        font-size: 1.75rem;
     }
-    
+
     nav ul {
         flex-direction: column;
-        gap: 10px;
+        gap: 0.5rem;
+        padding: 0.75rem 0;
     }
-    
+
     nav li {
-        margin: 5px 0;
+        margin: 0;
     }
-    
+
     section {
-        margin: 20px 10px;
-        padding: 20px 15px;
+        margin-left: 0.75rem;
+        margin-right: 0.75rem;
+        padding: 1.25rem 1rem;
     }
-    
-    .about-content {
-        flex-direction: column;
-        text-align: center;
-    }
-    
+
     .projects {
         grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
-    
+
+    .project-img {
+        max-height: 180px;
+    }
+
     .collapsible {
-        font-size: 1rem;
-        padding: 15px;
+        font-size: 0.95rem;
+        padding: 0.9rem 1rem;
     }
-    
+
     .hackathon-label {
         font-size: 0.75rem;
-        padding: 3px 8px;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .contact-text a + a {
+        margin-left: 0;
+        display: block;
+        margin-top: 0.25rem;
     }
 }
